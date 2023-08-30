@@ -43,14 +43,15 @@ public class User implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       List<SimpleGrantedAuthority> collect = roles.stream().map((role)-> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
+       List<SimpleGrantedAuthority> collect = this.roles.stream().map((role)-> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
        return collect;
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return this.email;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -59,6 +60,7 @@ public class User implements UserDetails{
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;

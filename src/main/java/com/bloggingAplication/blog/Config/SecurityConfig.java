@@ -36,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .anyRequest()
                 .authenticated()
                 .and()//.basicAuth() from here start jwt security auth.
-                    .exceptionHandling().authenticationEntryPoint(entryPoint)
+                    .exceptionHandling()
+                    .authenticationEntryPoint(entryPoint)
                     .and()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
