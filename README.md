@@ -26,3 +26,8 @@
 * Exception
 * Enum
 * Converters
+
+### ER MODEL SC
+![Screenshot (251)](https://github.com/avis97/BlogApp/assets/106426358/57a4642a-d523-489b-ae7a-2ca1851ef5e0)
+### POSTMAN SC WITH JWT TOKEN
+![Screenshot (252)](https://github.com/avis97/BlogApp/assets/106426358/fb8cc23c-6914-43bb-9e94-f37a1863bee0)
