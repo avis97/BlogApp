@@ -1,5 +1,6 @@
 package com.bloggingAplication.blog.Dtos;
 
+import com.bloggingAplication.blog.Entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class CommentResponseDto {
     private String content;
     private int postId;
     private int userId;
+    private PostResponseDto postResponseDto;
     private Date time;
 }

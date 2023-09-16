@@ -41,20 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .and()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-    }
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetails)
-                .passwordEncoder(passwordEncoder());
+          http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+  }
+   @Override
+   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+       auth.userDetailsService(customUserDetails)
+              .passwordEncoder(passwordEncoder());
+  }
+   @Bean
+  public PasswordEncoder passwordEncoder(){
+       return new BCryptPasswordEncoder();
     }
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+   public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+   }
 }

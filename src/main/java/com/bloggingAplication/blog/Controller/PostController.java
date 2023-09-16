@@ -1,14 +1,16 @@
 package com.bloggingAplication.blog.Controller;
 
-
+import java.util.*;
 import com.bloggingAplication.blog.Converter.PostConverter;
 import com.bloggingAplication.blog.Dtos.PostRequestDtos;
 import com.bloggingAplication.blog.Dtos.PostResponseDto;
+import com.bloggingAplication.blog.Entity.Post;
 import com.bloggingAplication.blog.Exception.CategoryNotFoundException;
 import com.bloggingAplication.blog.Exception.PostNotFoundException;
 import com.bloggingAplication.blog.Exception.UserNotFoundException;
 import com.bloggingAplication.blog.Service.FileService;
 import com.bloggingAplication.blog.Service.PostService;
+import com.bloggingAplication.blog.Service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -48,6 +50,16 @@ public class PostController{
 
         }
         return new ResponseEntity(postResponseDto,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/getPosts")
+    public ResponseEntity getAllPost(){
+        List<PostResponseDto> postList=new ArrayList<>();
+        try{
+            postList=postService.getAllPost();
+        }catch (Exception e){
+            return new ResponseEntity("Post Not Found",HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(postList,HttpStatus.ACCEPTED);
     }
     @GetMapping("/getPostById/{postId}")
     public ResponseEntity getPostById(@PathVariable("postId") Integer postId) throws PostNotFoundException {

@@ -1,5 +1,6 @@
 package com.bloggingAplication.blog.Service.impl;
 
+import com.bloggingAplication.blog.Converter.CommentConverter;
 import com.bloggingAplication.blog.Converter.PostConverter;
 import com.bloggingAplication.blog.Dtos.CommentRequestDto;
 import com.bloggingAplication.blog.Dtos.CommentResponseDto;
@@ -18,6 +19,7 @@ import com.bloggingAplication.blog.Service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
           User user;
           Post post;
           try{
-              user=userRepository.findById(commentRequestDto.getPostId()).get();
+              user=userRepository.findById(commentRequestDto.getUserId()).get();
           }catch(Exception e){
               throw new UserNotFoundException("Invalid User id");
           }
@@ -65,4 +67,24 @@ public class CommentServiceImpl implements CommentService {
 
           return dto;
       }
+    public List<CommentResponseDto> getAllComment() throws PostNotFoundException {
+          List<Comments> commentsList=commentsRepository.findAll();
+
+          List<CommentResponseDto> comments=new ArrayList<>();
+          for(Comments key:commentsList){
+              CommentResponseDto comment= CommentConverter.commentToCommentResponseDto(key);
+              Post post;
+              PostResponseDto responseDto;
+              try {
+                  post = postRepository.findById(key.getPost().getPostId()).get();
+                  responseDto=PostConverter.postToPostResponseDto(post);
+              }
+              catch (Exception e){
+                  throw new PostNotFoundException("Post is not found");
+              }
+              comment.setPostResponseDto(responseDto);
+              comments.add(comment);
+          }
+          return comments;
+    }
 }

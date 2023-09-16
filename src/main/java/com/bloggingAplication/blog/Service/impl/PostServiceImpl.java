@@ -16,6 +16,7 @@ import com.bloggingAplication.blog.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -92,5 +93,15 @@ public class PostServiceImpl implements PostService {
            PostResponseDto responseDto=PostConverter.postToPostResponseDto(post);
 
            return responseDto;
+    }
+    public List<PostResponseDto> getAllPost(){
+        List<Post> postList=postRepository.findAll();
+
+        List<PostResponseDto> list=new ArrayList<>();
+        for(Post key:postList){
+            PostResponseDto responseDto=PostConverter.postToPostResponseDto(key);
+            list.add(responseDto);
+        }
+        return list;
     }
 }
