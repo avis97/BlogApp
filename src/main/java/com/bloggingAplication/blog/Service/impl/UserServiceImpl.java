@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -57,5 +60,35 @@ public class UserServiceImpl implements UserService {
 
         UserResponseDtos responseDtos=UserConverter.UserToResponseDto(user);
         return responseDtos;
+    }
+    public List<UserResponseDtos> getAllUser(){
+        List<User> userList=userRepository.findAll();
+        List<UserResponseDtos> listOfUser=new ArrayList<>();
+        for(User user:userList){
+            UserResponseDtos responseDtos=UserConverter.UserToResponseDto(user);
+            listOfUser.add(responseDtos);
+        }
+        return listOfUser;
+    }
+    public UserResponseDtos getUserById(int userId) throws UserNotFoundException {
+        User user;
+        try{
+            user=userRepository.findById(userId).get();
+        }catch(Exception e){
+            throw new UserNotFoundException("User Not Found!!");
+        }
+        UserResponseDtos userResponseDtos=UserConverter.UserToResponseDto(user);
+        return userResponseDtos;
+    }
+    public UserResponseDtos deleteUserById(int userId) throws UserNotFoundException {
+        User user;
+        try{
+            user=userRepository.findById(userId).get();
+            userRepository.delete(user);
+        }catch(Exception e){
+            throw new UserNotFoundException("User Not Found");
+        }
+        UserResponseDtos userResponseDtos=UserConverter.UserToResponseDto(user);
+        return userResponseDtos;
     }
 }

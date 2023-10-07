@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
-public class FileServiceImpl implements FileService {
+public class FileServiceImpl implements FileService{
     @Override
     public String uploadImage(String path, MultipartFile file) throws IOException{
 
@@ -32,7 +32,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public InputStream getResources(String path, String fileName) throws FileNotFoundException {
+    public InputStream getResources(String path, String fileName) throws FileNotFoundException{
 
         String fullPath=path+File.separator+fileName;
         InputStream in=new FileInputStream(fullPath);

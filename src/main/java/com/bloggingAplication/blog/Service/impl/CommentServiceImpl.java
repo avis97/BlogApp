@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CommentServiceImpl implements CommentService {
+public class CommentServiceImpl implements CommentService{
 
       @Autowired
       PostRepository postRepository;

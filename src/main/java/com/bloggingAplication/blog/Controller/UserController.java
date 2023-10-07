@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+import java.util.*;
 @RestController
 @RequestMapping("/user")
 public class UserController{
@@ -22,7 +22,26 @@ public class UserController{
     public UserResponseDtos addUser(@Valid @RequestBody UserRequestDtos userRequestDtos){
          return userService.addUser(userRequestDtos);
     }
-
+    @GetMapping("/getAllUser")
+    public ResponseEntity getAllUser(){
+        List<UserResponseDtos> userList;
+        try {
+            userList = userService.getAllUser();
+        }catch(Exception e){
+            return new ResponseEntity("User is empty",HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(userList,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/getUserById/{userId}")
+    public ResponseEntity getUserById(@PathVariable("userId") int userId) throws UserNotFoundException {
+        UserResponseDtos user;
+        try{
+            user=userService.getUserById(userId);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(user,HttpStatus.ACCEPTED);
+    }
     @PutMapping("/updateuser/{id}")
     public ResponseEntity updateUser(@Valid @RequestBody UserRequestDtos userRepo, @PathVariable("id") Integer id) throws UserNotFoundException {
          UserResponseDtos user;
@@ -31,7 +50,17 @@ public class UserController{
          }catch(UserNotFoundException e){
              return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
          }
-
          return new ResponseEntity(user,HttpStatus.ACCEPTED);
+    }
+    @DeleteMapping("/deleteUser/{userId}")
+    public ResponseEntity deleteUserById(@PathVariable("userId") int userId) throws UserNotFoundException {
+        UserResponseDtos user;
+        try{
+            user=userService.deleteUserById(userId);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        String UserName=user.getUserName();
+        return new ResponseEntity(UserName+" This User Is Deleted!!",HttpStatus.ACCEPTED);
     }
 }

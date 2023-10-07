@@ -1,7 +1,6 @@
 package com.bloggingAplication.blog.Config;
 
 import com.bloggingAplication.blog.Entity.User;
-import com.bloggingAplication.blog.Exception.UserNotFoundException;
 import com.bloggingAplication.blog.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
