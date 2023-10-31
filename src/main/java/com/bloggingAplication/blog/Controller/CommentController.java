@@ -21,9 +21,7 @@ public class CommentController{
     @PostMapping("/addComments")
     public ResponseEntity addComment(@RequestBody CommentRequestDto commentRequestDto)
             throws UserNotFoundException, PostNotFoundException{
-
        CommentResponseDto commentResponseDto;
-
        try{
            commentResponseDto=commentService.addComment(commentRequestDto);
        }catch(PostNotFoundException e){

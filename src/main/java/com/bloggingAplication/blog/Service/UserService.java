@@ -1,5 +1,6 @@
 package com.bloggingAplication.blog.Service;
 
+import com.bloggingAplication.blog.Dtos.PostResponseDto;
 import com.bloggingAplication.blog.Dtos.UserRequestDtos;
 import com.bloggingAplication.blog.Dtos.UserResponseDtos;
 import com.bloggingAplication.blog.Entity.User;
@@ -15,4 +16,5 @@ public interface UserService{
     List<UserResponseDtos> getAllUser();
     UserResponseDtos getUserById(int userId) throws UserNotFoundException;
     UserResponseDtos deleteUserById(int userId) throws UserNotFoundException;
+    List<PostResponseDto> getAllPostByUserId(int userId) throws UserNotFoundException;
 }

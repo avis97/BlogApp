@@ -1,5 +1,4 @@
 package com.bloggingAplication.blog.Config;
-
 import com.bloggingAplication.blog.Entity.User;
 import com.bloggingAplication.blog.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

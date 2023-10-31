@@ -1,5 +1,6 @@
 package com.bloggingAplication.blog.Controller;
 
+import com.bloggingAplication.blog.Dtos.PostResponseDto;
 import com.bloggingAplication.blog.Dtos.UserRequestDtos;
 import com.bloggingAplication.blog.Dtos.UserResponseDtos;
 import com.bloggingAplication.blog.Entity.User;
@@ -8,6 +9,7 @@ import com.bloggingAplication.blog.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +25,7 @@ public class UserController{
          return userService.addUser(userRequestDtos);
     }
     @GetMapping("/getAllUser")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity getAllUser(){
         List<UserResponseDtos> userList;
         try {
@@ -51,6 +54,16 @@ public class UserController{
              return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
          }
          return new ResponseEntity(user,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/getAllPost/{userId}")
+    public ResponseEntity getAllPostByUserId(@PathVariable("userId") int userId){
+        List<PostResponseDto> posts;
+        try {
+           posts= userService.getAllPostByUserId(userId);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(posts,HttpStatus.ACCEPTED);
     }
     @DeleteMapping("/deleteUser/{userId}")
     public ResponseEntity deleteUserById(@PathVariable("userId") int userId) throws UserNotFoundException {

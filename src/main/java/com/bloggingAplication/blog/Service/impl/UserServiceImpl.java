@@ -1,8 +1,11 @@
 package com.bloggingAplication.blog.Service.impl;
 
+import com.bloggingAplication.blog.Converter.PostConverter;
 import com.bloggingAplication.blog.Converter.UserConverter;
+import com.bloggingAplication.blog.Dtos.PostResponseDto;
 import com.bloggingAplication.blog.Dtos.UserRequestDtos;
 import com.bloggingAplication.blog.Dtos.UserResponseDtos;
+import com.bloggingAplication.blog.Entity.Post;
 import com.bloggingAplication.blog.Entity.User;
 import com.bloggingAplication.blog.Exception.UserNotFoundException;
 import com.bloggingAplication.blog.Repository.UserRepository;
@@ -79,6 +82,21 @@ public class UserServiceImpl implements UserService {
         }
         UserResponseDtos userResponseDtos=UserConverter.UserToResponseDto(user);
         return userResponseDtos;
+    }
+    public List<PostResponseDto> getAllPostByUserId(int userId) throws UserNotFoundException {
+        User user;
+        try{
+            user=userRepository.findById(userId).get();
+        }catch(Exception e){
+            throw new UserNotFoundException("User id is not valid");
+        }
+        List<Post> postList=user.getPostList();
+        List<PostResponseDto> posts=new ArrayList<>();
+        for(Post p:postList){
+            PostResponseDto responseDto= PostConverter.postToPostResponseDto(p);
+            posts.add(responseDto);
+        }
+        return posts;
     }
     public UserResponseDtos deleteUserById(int userId) throws UserNotFoundException {
         User user;
