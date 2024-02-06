@@ -7,17 +7,22 @@ import com.bloggingAplication.blog.Dtos.UserResponseDtos;
 import com.bloggingAplication.blog.JwtSecurity.JwtTokenHelper;
 import com.bloggingAplication.blog.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -31,28 +36,37 @@ public class AuthController{
     @Autowired
     UserService userService;
 
-
     @PostMapping("/login")
-    public ResponseEntity<JwtAuthResponse>  createToken(@RequestBody JwtAuthRequest request){
+    public JwtAuthResponse createToken(@RequestBody JwtAuthRequest request, HttpServletResponse response) throws Exception {
 
-        authenticate(request.getUsername(),request.getPassword());
-        UserDetails userDetails= detailsService.loadUserByUsername(request.getUsername());
-        String token=tokenHelper.generateToken(userDetails);
+        try {
+            authenticate(request.getUsername(), request.getPassword());
+            UserDetails userDetails = detailsService.loadUserByUsername(request.getUsername());
+            String token = tokenHelper.generateToken(userDetails);
+            ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+                    .httpOnly(true)
+                    .secure(false)
+                    .path("/")
+                    .maxAge(5*60*60)
+                    .build();
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        JwtAuthResponse response=new JwtAuthResponse();
-        response.setToken(token);
-
-        return new ResponseEntity<JwtAuthResponse>(response, HttpStatus.ACCEPTED);
+            return JwtAuthResponse.builder().token("welcome").build();
+           // return new ResponseEntity(token,HttpStatus.ACCEPTED);
+        } catch (UsernameNotFoundException e) {
+            // Customize the exception message or response if the user is not found
+            throw new UsernameNotFoundException("User not found or invalid credentials");
+        }
     }
 
-    private void authenticate(String username, String password){
+    private void authenticate(String username, String password) throws Exception {
 
         UsernamePasswordAuthenticationToken Token=new
                 UsernamePasswordAuthenticationToken(username,password);
         try {
-            authenticationManager.authenticate(Token);
-        }catch(Exception e){
-            throw new DisabledException("User Is Disable");
+           this.authenticationManager.authenticate(Token);
+        }catch(BadCredentialsException e){
+            throw new Exception("Invalid username or password");
         }
     }
     @PostMapping("/register")

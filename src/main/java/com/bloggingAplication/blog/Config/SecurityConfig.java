@@ -15,11 +15,23 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+
+    public static final String[] PUBLIC_URLS={
+        "/api/v1/auth/login",
+            "/v3/api-docs",
+            "/v2/api-docs",
+            "/api/v1/auth/register",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
+    };
     @Autowired
     CustomUserDetails customUserDetails;
     @Autowired
@@ -33,8 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                    .antMatchers("/api/v1/auth/login").permitAll()
-                    .antMatchers("/api/v1/auth/register").permitAll()
+//                    .antMatchers("/api/v1/auth/login").permitAll()
+//                    .antMatchers("/v3/api-docs").permitAll()
+//                    .antMatchers("/api/v1/auth/register").permitAll()
+                    .antMatchers(PUBLIC_URLS).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()//.basicAuth() from here start jwt security auth.
