@@ -39,7 +39,7 @@ public class PostController{
         PostResponseDto postResponseDto;
         try{
             postResponseDto=postService.addPost(postRequestDtos);
-
+            System.out.println(postResponseDto);
         }catch(UserNotFoundException e){
 
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
