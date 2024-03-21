@@ -67,7 +67,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 //        }
         String token = null;
         String username = null;
-
         if(request.getCookies() != null){
             for(Cookie cookie: request.getCookies()){
                 if(cookie.getName().equals("accessToken")){
@@ -75,7 +74,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 }
             }
         }
-
         if(token == null){
             filterChain.doFilter(request, response);
             return;
@@ -86,7 +84,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         if(username != null){
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if(jwtTokenHelper.validateToken(token, userDetails)){
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null,
+                                userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }

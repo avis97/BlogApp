@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -50,7 +52,6 @@ public class AuthController{
                     .maxAge(5*60*60)
                     .build();
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
             return JwtAuthResponse.builder().token("welcome").build();
            // return new ResponseEntity(token,HttpStatus.ACCEPTED);
         } catch (UsernameNotFoundException e) {
@@ -75,6 +76,25 @@ public class AuthController{
             UserResponseDtos dtos=userService.registerNewUser(userRequestDtos);
 
             return new ResponseEntity<UserResponseDtos>(dtos,HttpStatus.CREATED);
+    }
+    @PostMapping("/log-out")
+    public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        System.out.println(cookies.toString());
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("accessToken")) {
+                    // Invalidate the token by removing or marking it as invalid
+                    cookie.setMaxAge(0); // Remove the cookie
+                    cookie.setValue(null);
+                    cookie.setPath("/"); // Set the cookie path
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+        // Redirect the user to the login page or send a success message
+        return ResponseEntity.ok("Logout successful");
     }
 
 }

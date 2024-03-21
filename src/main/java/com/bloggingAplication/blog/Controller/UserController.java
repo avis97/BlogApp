@@ -24,8 +24,9 @@ public class UserController{
     public UserResponseDtos addUser(@Valid @RequestBody UserRequestDtos userRequestDtos){
          return userService.addUser(userRequestDtos);
     }
+
     @GetMapping("/getAllUser")
-  //  @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity getAllUser(){
         List<UserResponseDtos> userList;
         try {
@@ -35,6 +36,7 @@ public class UserController{
         }
         return new ResponseEntity(userList,HttpStatus.ACCEPTED);
     }
+
     @GetMapping("/getUserById/{userId}")
     public ResponseEntity getUserById(@PathVariable("userId") int userId) throws UserNotFoundException {
         UserResponseDtos user;
