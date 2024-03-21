@@ -48,11 +48,11 @@ public class AuthController{
             ResponseCookie cookie = ResponseCookie.from("accessToken", token)
                     .httpOnly(true)
                     .secure(false)
-                    .path("/")
+                    .path("/api/v1/auth/login")
                     .maxAge(5*60*60)
                     .build();
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-            return JwtAuthResponse.builder().token("welcome").build();
+            return JwtAuthResponse.builder().token("Your login done.").build();
            // return new ResponseEntity(token,HttpStatus.ACCEPTED);
         } catch (UsernameNotFoundException e) {
             // Customize the exception message or response if the user is not found
