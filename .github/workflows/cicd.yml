@@ -1,1 +1,36 @@
+name: CICD
 
+on:
+  push:
+    branches: [cicd-dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Project
+        run: mvn clean install -DskipTests
+      - name: Login to docker hub
+        run: docker login -u savishek -p SarkarAvi@1997
+      - name: Build docker image
+        run: docker build -t savishek/blogapp .
+      - name: Publish image to docker hub
+        run: docker push savishek/blogapp:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted  # Specify that this job should run on a self-hosted runner
+    steps:
+      - name: Pull Image from docker hub
+        run: docker pull savishek/blogapp:latest
+      - name: Delete old container
+        run: docker rm -f blogapp-container || true
+      - name: Run docker container
+        run: docker run -d -p 8092:8092 --name blogapp-container savishek/blogapp

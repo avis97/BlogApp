@@ -45,13 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             http
                 .csrf().disable()
                 .authorizeHttpRequests()
-//                    .antMatchers("/api/v1/auth/login").permitAll()
-//                    .antMatchers("/v3/api-docs").permitAll()
-//                    .antMatchers("/api/v1/auth/register").permitAll()
                     .antMatchers(PUBLIC_URLS).permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()//.basicAuth() from here start jwt security auth.
+                    .anyRequest()
+                    .authenticated()
+                    .and()//.basicAuth() from here start jwt security auth.
                     .exceptionHandling()
                     .authenticationEntryPoint(entryPoint)
                     .and()
