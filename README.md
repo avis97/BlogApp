@@ -1,4 +1,4 @@
-# Blog Application
+# Blog Application(Backend)
  * This is a basically bloging application.user can handle the application for update new post with category.
  user can see all post posted by others user and can write comment with this post.the main thing is also can add photo file with the post like social application.
  and also i used here spring Jwt security for authentication.
