@@ -4,7 +4,7 @@
  and also i used here spring Jwt security for authentication.
  * This is a Spring Maven project I used MySql driver for handle the database and hibernate for Connect with the Mapping.
  i have made some Rest APIs for performing post/delete/update/get operation with JWT Bearer Security.
- * Also i build CI/CD configuration for Auto deployment in EC2.Used GitHub Acction and Deocer Hub for buld the Auto Deployment
+ * Also i build CI/CD configuration for Auto deployment in EC2.Used GitHub Acction and Docker Hub for build the Auto Deployment
    configuration by one push operation in github.
 
 ### MAVEN SPRING DEPENDENCY
