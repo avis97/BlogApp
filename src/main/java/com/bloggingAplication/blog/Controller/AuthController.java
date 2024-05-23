@@ -52,7 +52,7 @@ public class AuthController{
                     .maxAge(5*60*60)
                     .build();
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-            return JwtAuthResponse.builder().token("Your login done successfully done.").build();
+            return JwtAuthResponse.builder().token("Your login done successfully done With Password").build();
            // return new ResponseEntity(token,HttpStatus.ACCEPTED);
         } catch (UsernameNotFoundException e) {
             // Customize the exception message or response if the user is not found
