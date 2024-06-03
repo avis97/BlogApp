@@ -7,15 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class BlogApplication implements CommandLineRunner{
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+public class BlogApplication{
 	public static void main(String[] args){
 		SpringApplication.run(BlogApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		System.out.println(this.passwordEncoder.encode("1997avi"));
 	}
 }

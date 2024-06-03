@@ -39,7 +39,8 @@ public class AuthController{
     UserService userService;
 
     @PostMapping("/login")
-    public JwtAuthResponse createToken(@RequestBody JwtAuthRequest request, HttpServletResponse response) throws Exception {
+    public JwtAuthResponse createToken(@RequestBody JwtAuthRequest request,
+                                       HttpServletResponse response) throws Exception{
 
         try {
             authenticate(request.getUsername(), request.getPassword());
@@ -71,11 +72,15 @@ public class AuthController{
         }
     }
     @PostMapping("/register")
-    private ResponseEntity<UserResponseDtos> registerNewUser(@RequestBody UserRequestDtos userRequestDtos){
+    private ResponseEntity registerNewUser(@RequestBody UserRequestDtos userRequestDtos) throws Exception {
+        UserResponseDtos dtos=null;
+        try{
+            dtos=userService.registerNewUser(userRequestDtos);
+        }catch (Exception e){
+            return new ResponseEntity<>("Sorry Something wrong here",HttpStatus.BAD_REQUEST);
+        }
 
-            UserResponseDtos dtos=userService.registerNewUser(userRequestDtos);
-
-            return new ResponseEntity<UserResponseDtos>(dtos,HttpStatus.CREATED);
+        return new ResponseEntity(dtos,HttpStatus.CREATED);
     }
     @PostMapping("/log-out")
     public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){

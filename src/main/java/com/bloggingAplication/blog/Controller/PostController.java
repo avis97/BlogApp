@@ -102,7 +102,8 @@ public class PostController{
         return new ResponseEntity(newImage,HttpStatus.ACCEPTED);
     }
     @GetMapping(value = "/getImage/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
-    public void downloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response)throws IOException{
+    public void downloadImage(@PathVariable("imageName") String imageName,
+                              HttpServletResponse response)throws IOException{
 
         InputStream resource=fileService.getResources(path,imageName);
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
