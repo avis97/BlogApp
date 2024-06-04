@@ -38,5 +38,5 @@
 ### SC OF CI/CD AUTO BUILD AND DEPLOYMENT IN AWS EC2.
 ![Screenshot (390)](https://github.com/avis97/BlogApp/assets/106426358/3cd3d5ad-7bbe-4359-b4ae-7e5f6abed6f0)
 
-
-
+### SC OF SWAGGER-UI DOCUMENTATION
+![Screenshot (420)](https://github.com/avis97/BlogApp-config_withCI-CD-/assets/106426358/0b72ddb8-a38a-47f6-8235-3e30d97444b8)
